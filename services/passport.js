@@ -21,18 +21,20 @@ passport.use(
       clientID: keys.googleClientID,
       clientSecret: keys.googleClientSecret,
       callbackURL: '/auth/google/callback',
+      // in Heroku, we make request to proxy server, which transform our https request to http and cause the mismatch
+      // between callbackURL and the https URL registered in Google Console.
+      // So we need to tell the server to ignore the proxy's protocal and use sender's protocal instead.
       proxy: true
     },
-    (accessToken, refreshToken, profile, done) => {
-      User.findOne({ googleId: profile.id }).then(existingUser => {
-        if (existingUser) {
-          done(null, existingUser); // this user object is passed to passport.serializeUser function
-        } else {
-          new User({ googleId: profile.id })
-            .save()
-            .then(user => done(null, user)); // this user object is passed to passport.serializeUser function
-        }
-      });
+    async (accessToken, refreshToken, profile, done) => {
+      const existingUser = await User.findOne({ googleId: profile.id });
+
+      if (existingUser) {
+        return done(null, existingUser);
+      }
+
+      const user = new User({ googleId: profile.id }).save();
+      done(null, user);
     }
   )
 );
