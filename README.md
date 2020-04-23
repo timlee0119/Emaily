@@ -6,3 +6,5 @@ I created this project following an [Udemy course](https://www.udemy.com/course/
 - A clear split between development and production workflow/environment setup
 - Online payment feature with [Stripe](https://stripe.com/)
 - Promotional email service with [Sendgrid](https://sendgrid.com/)
+## My Notes
+https://paper.dropbox.com/doc/Node-JS-Backend-Notes--AyrlNBIF4~yF9T7rrPzQ_iPjAQ-6aFQe3p86RqCOyluVjEiZ
